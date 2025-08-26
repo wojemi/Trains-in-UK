@@ -2,7 +2,7 @@ use railway;
 
 select * from rc_upload; 
 
--- 1) Średnia cena biletu z podziałem na typ zakupu (online/stacja) w każdym miesiącu, z porównaniem do średniej ogólnej
+-- 1) Average ticket price by purchase type (online/station) each month, compared to the overall average
 with 
 first_step as  
 (
@@ -27,7 +27,7 @@ second_step as
 	from first_step fs
 	cross join second_step ss;
 
--- 2) Ranking 5 stacji początkowych, które mają najwyższe średnie opóźnienie w minutach w okresie styczeń-kwiecień 2024
+-- 2) Ranking of the 5 origin stations with the highest average delay in minutes in January-April 2024
 select * from rc_upload; 
 
 with 
@@ -59,7 +59,7 @@ third_step as
 select * from third_step
 where avg_time_diff_ranked <= 5;
 
--- 3) Przedstaw procent podróży opóźnionych dla każdej klasy biletu z podziałem na miesiące
+-- 3) The percentage of delayed trips for each ticket class, broken down by month
 select * from rc_upload;
 
 with 
@@ -85,7 +85,7 @@ second_step as
 )
 select * from second_step;
 
--- 4) Średni czas opóźnienia w zależności od powodu opóźnienia, z wykluczeniem podróży punktualnych
+-- 4) Average delay time by delay reason, excluding on-time journeys 
 select * from rc_upload; 
 
 with 
@@ -100,11 +100,11 @@ first_step as
 )
 select * from first_step;
 
--- 6) Wartość sprzedanych biletów w podziale na miesiące, wraz z procentową zmianą miesiąc do miesiąca
+-- 6) Value of tickets sold by month, along with the percentage change month-on-month
 select * from rc_upload; 
 
 with 
-first_step as        -- suma cen biletów w każdym miesiącu
+first_step as        -- total ticket prices each month
 (
 	select 	
 		date_format(date_of_purchase, '%Y-%m') as ticket_per_month,
@@ -112,7 +112,7 @@ first_step as        -- suma cen biletów w każdym miesiącu
 	from rc_upload
 	group by date_format(date_of_purchase, '%Y-%m')
 ),
-second_step as   -- zmiana miesiąc do miesiąca
+second_step as   -- month-to-month change
 (
 	select 	
 		ticket_per_month,
@@ -121,7 +121,7 @@ second_step as   -- zmiana miesiąc do miesiąca
 		sum_price - lag(sum_price) over (order by ticket_per_month) as price_change
 	from first_step 
 ),
-third_step as   -- procentowa zmiana
+third_step as   -- percentage change
 (
 	select 
 		ticket_per_month,
@@ -133,7 +133,7 @@ third_step as   -- procentowa zmiana
 )
 select * from third_step;
 
--- 7) Średnia cena biletu w zależności od pory dnia
+-- 7) Average ticket price depending on the time of day
 with 
 first_step as 
 (
@@ -158,7 +158,7 @@ order by
 		else 4
 	end;
 
--- 8) Porównanie punktualności podróży w dni robocze vs weekendy
+-- 8) Comparison of travel punctuality on weekdays vs. weekends
 select * from rc_upload;
 
 with 
@@ -190,8 +190,7 @@ select
 from second_step
 order by day_of_week;
 
-
--- 9) 3 najpopularniejsze relacje podróżnicze pod względem liczby sprzedanych biletów w każdym miesiącu
+-- 9) The 3 most popular travel stories by number of tickets sold each month
 select * from rc_upload;
 
 with 
@@ -218,7 +217,7 @@ second_step as
 select * from second_step
 where ticket_count_ranked <= 3;
 
--- 10) Analiza metod płatności - które dominują w przypadku zakupów online, a które na stacji
+-- 10) Analysis of payment methods - which ones dominate online purchases and which ones are used at the gas station
 select * from rc_upload;
 
 with
@@ -244,7 +243,7 @@ second_step as
 select * from second_step
 where payment_count_ranked = 1;
 
--- 11) Czas pomiędzy zakupem biletu a datą podróży - średnia i odchylenie standardowe w podziale na rodzaj biletu
+-- 11) Time between ticket purchase and travel date - mean and standard deviation by ticket type
 select * from rc_upload; 
 
 with 
@@ -268,7 +267,7 @@ second_step as
 )
 select * from second_step;
 
--- 12) Porównanie średniej ceny biletu opóźnionych podróży vs punktualnych vs odwołanych - z wyznaczeniem różnicy w procentach
+-- 12) Comparison of the average ticket price for delayed trips vs. on-time vs. canceled trips - with the difference in percentage
 select * from rc_upload; 
 
 with 
@@ -295,7 +294,7 @@ select
 	concat(ROUND(100 * (delayed_journey - on_time) / on_time, 2), '%') as prc_rate
 from second_step;
 
--- 13) Analiza wpływu kart zniżkowych 'Railcard' na średnią cenę biletu
+-- 13) Analysis of the impact of 'Railcard' discount cards on the average ticket price
 select * from rc_upload; 
 
 select 	
@@ -305,7 +304,7 @@ from rc_upload
 group by railcard
 order by avg_price;
 
--- 14) Średnia liczba minut opóźnienia w podziale na dni tygodnia
+-- 14) Average number of minutes of delay by day of the week
 select * from rc_upload;
 
 select
@@ -315,11 +314,11 @@ from rc_upload
 group by dayname(date_of_journey)
 order by field(day_of_week, 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
 
--- 15) Liczba sprzedanych biletów oraz opóźnionych podróży w podziale miesięcznym wraz ze zmiana miesiąc do miesiąca
+-- 15) Number of tickets sold and delayed trips by month, with month-on-month change
 select * from rc_upload; 
 
 with 
-first_step as    -- sprzedane bilety w każdym miesiącu
+first_step as    -- tickets sold each month
 (
 	select 
 		DATE_FORMAT(date_of_purchase, '%Y-%m') as month_of_purchase,
@@ -359,6 +358,7 @@ from third_step;
 
 
 	
+
 
 
 
