@@ -5,7 +5,7 @@ This repository contains SQL code describing and analyzing the data concerns 'Tr
 The aim of the data analysis is to help identify where delays occur, on which routes train run on time, how ticket prices are structured, and what the level of public demand for train travel is.
 
 # Dataset
-Dataset used for this project comes from the KajoData SQL course and contains information aboutticket prices, train routes, delays, departure and arrival points.
+Dataset used for this project comes from the KajoData SQL course and contains information about ticket prices, train routes, delays, departure and arrival points.
 Dataset includes:
 - departure station
 - price
