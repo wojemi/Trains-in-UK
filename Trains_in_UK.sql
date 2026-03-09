@@ -17,7 +17,7 @@ select
 	max(date_of_purchase) as max_date
 from rc_upload;
 
--- 1) Average ticket price broken down by type of purchase (online/at the station) in eatch months compared to the overall average:
+-- 1) Average ticket price broken down by type of purchase (online/at the station) in each month compared to the overall average:
 with 
 first_step as  
 (
@@ -42,7 +42,7 @@ second_step as
 	from first_step fs
 	cross join second_step ss;
 
--- Overal average price is equal to 23.44 GBP 
+-- Overall average price is equal to 23.44 GBP 
 -- We can observe that in the first month of 2024 online tickets were cheaper than in December 2023. Tickets purchased at the station have doubled in price.
 -- Tickets purchased via the website are characterized by the fact that their price is lower than the average ticket price.
 
@@ -108,7 +108,7 @@ second_step as
 select * from second_step;
 
 -- In the analyzed period First Class journeys are always delayed more than Standard Class, with the exception of March 2024.
--- In December 2023, 50% of First Class journeys were delayed. but this was because there were only 2 such journeys, one of which was delayed.
+-- In December 2023, 50% of First Class journeys were delayed, but this was because there were only 2 such journeys, one of which was delayed.
 
 -- 4) Average delay time depending on the reason for the delay, excluding punctual journeys:
 select * from rc_upload; 
